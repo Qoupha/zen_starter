@@ -4,8 +4,6 @@ import {
   View,
   Text,
   Image,
-  Button,
-  Pressable,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
@@ -53,12 +51,12 @@ export default function App(props) {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-   
+
       let AdressViewMap = await Location.reverseGeocodeAsync(viewRegion.latitude ? viewRegion : {
         longitude: location.coords.longitude,
         latitude: location.coords.latitude
       })
-      console.log(AdressViewMap);
+      // console.log(AdressViewMap);
       setDetectNameRegion(AdressViewMap[0].city)
 
       if (load) {
@@ -66,7 +64,6 @@ export default function App(props) {
       }
     })();
   }, [viewRegion]);
-
   const goToHome = () => {
     // console.log(1);
     mapRef.current.animateToRegion(
@@ -78,7 +75,7 @@ export default function App(props) {
     );
   };
   const { onPressLeft, titleLeft = "Chats" } = props;
-  const { onPressRight, titleCenter = "Click me" } = props;
+  const { onPressRight, titleCenter = "Where I" } = props;
   const { onPressCenter, titleRight = "Settings" } = props;
   const ref = React.useRef(null);
   const ref1 = React.useRef(null);
@@ -148,7 +145,9 @@ export default function App(props) {
                   latitude={marker.latitude}
                   longitude={marker.longitude}
                   title={marker.title}
-                ></CustomMarker>
+
+                >
+                </CustomMarker>
               ))}
               <Marker style={styles.marker}
                 onPress={onPress}
@@ -158,10 +157,9 @@ export default function App(props) {
                   style={styles.touchMarker}
                   onPress={React.useCallback}
                 >
-                  <Text style={styles.textMarker}>{speed.toFixed(2)}KM/H</Text>
+                  <Text style={styles.textMarker}>{speed < 0 ? '0' : speed < 1 ? Math.ceil(speed) : speed.toFixed(0)} KM/H</Text>
                 </TouchableOpacity>
               </Marker>
-
             </MapView>
             <View style={styles.markerFixed}>
               <Image style={styles.markerInvisible} />
@@ -184,8 +182,6 @@ export default function App(props) {
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={styles.buttonCenter}
-
-              // onPressRight={goToHome}
               >
                 <Text style={styles.text}>{titleRight}</Text>
               </TouchableOpacity>
@@ -205,27 +201,22 @@ export default function App(props) {
 
             </BottomSheet>
             <Chats ref={ref1}>
-            <View style={styles.allChat}>
-            {MARKERS_DATA.map((marker) => (
-                  <View style={styles.userChat}>
+              <View style={styles.allChat}>
+                {MARKERS_DATA.map((marker) => (
+                  <View style={styles.userChat} key={marker.id}>
                     <View style={styles.userImg}>
                       {/* <ImagesExample /> */}
-                     <Image source={{ uri: 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg' }}
+                      <Image source={{ uri: 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg' }}
                         style={{ width: 50, height: 50, borderRadius: 10, }}
                       />
                     </View>
                     <View style={styles.userNick}>
                       <Text style={styles.userNickTxt}>{marker.name}</Text>
-                    </View>
-                    <View style={styles.userMsg}>
                       <Text style={styles.userMsgTxt}>{marker.msg}</Text>
                     </View>
-            </View>
-
-            ))}
-
-
-            </View>
+                  </View>
+                ))}
+              </View>
             </Chats>
 
           </>

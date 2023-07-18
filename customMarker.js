@@ -1,7 +1,7 @@
 import React from "react";
 import { Marker } from "react-native-maps";
 import Animated from "react-native-reanimated";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import useMarkerAnimation from "./useMarkerAnimation";
 
 export default function CustomMarker({
@@ -11,6 +11,7 @@ export default function CustomMarker({
   latitude,
   longitude,
   title,
+  img
 }) {
   // const scale = useMarkerAnimation({ id, selectedMarker });
 
@@ -21,6 +22,7 @@ export default function CustomMarker({
         longitude: longitude,
       }}
       title={title}
+      image={img}
     >
       <View>
         <Animated.View
@@ -31,7 +33,8 @@ export default function CustomMarker({
               // transform: [{ scale: scale }],
             },
           ]}
-        ></Animated.View>
+        >
+        </Animated.View>
       </View>
     </Marker>
   );
